@@ -76,6 +76,11 @@
     - not php_install_from_source
     - ansible_facts.os_family == 'Debian'
 
+- include_tasks: setup-Suse.yml
+  when:
+    - not php_install_from_source
+    - ansible_facts.os_family == 'Suse'
+
 # Install PHP from source when php_install_from_source is true.
 - include_tasks: install-from-source.yml
   when: php_install_from_source

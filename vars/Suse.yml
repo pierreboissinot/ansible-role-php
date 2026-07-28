@@ -1,0 +1,24 @@
+---
+__php_packages:
+  - php8
+  - php8-cli
+  - php8-fpm
+
+__php_webserver_daemon: "apache2"
+
+# SUSE ships a single shared conf.d for all SAPIs (unlike Debian's per-SAPI dirs).
+__php_conf_paths:
+  - /etc/php8/fpm
+  - /etc/php8/cli
+
+__php_extension_conf_paths:
+  - /etc/php8/conf.d
+
+__php_apc_conf_filename: apcu.ini
+__php_opcache_conf_filename: opcache.ini
+__php_fpm_daemon: php-fpm
+__php_fpm_conf_path: "/etc/php8/fpm"
+__php_fpm_pool_conf_path: "/etc/php8/fpm/php-fpm.d/www.conf"
+
+__php_fpm_pool_user: wwwrun
+__php_fpm_pool_group: www
