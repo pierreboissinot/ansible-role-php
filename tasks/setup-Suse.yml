@@ -7,8 +7,15 @@
   register: php_package_install
   notify: restart webserver
 
-# SUSE ships php-fpm.conf as php-fpm.conf.default only; the service cannot
-# start until a real configuration file exists.
+# openSUSE distro packaging ships php-fpm.conf as php-fpm.conf.default only
+# (the OBS devel:languages:php builds ship a real php-fpm.conf); the service
+# cannot start until a real configuration file exists.
+- name: Check for SUSE-shipped php-fpm.conf.default.
+  ansible.builtin.stat:
+    path: "{{ php_fpm_conf_path }}/php-fpm.conf.default"
+  register: php_fpm_conf_default
+  when: php_enable_php_fpm
+
 - name: Materialize php-fpm.conf from the SUSE-shipped default.
   ansible.builtin.copy:
     src: "{{ php_fpm_conf_path }}/php-fpm.conf.default"
@@ -18,7 +25,7 @@
     owner: root
     group: root
     mode: 0644
-  when: php_enable_php_fpm
+  when: php_enable_php_fpm and php_fpm_conf_default.stat.exists
 
 - name: Delete APCu configuration file if this role will provide one.
   file:
